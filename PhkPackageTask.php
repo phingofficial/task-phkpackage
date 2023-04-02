@@ -1,4 +1,5 @@
 <?php
+
 /**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -17,8 +18,9 @@
  * <http://phing.info>.
  */
 
-namespace Phing\Task\Ext;
+namespace Phing\Task\Ext\PhkPackage;
 
+use Phing\Exception\BuildException;
 use Phing\Task;
 
 /**
@@ -197,18 +199,20 @@ class PhkPackageTask extends Task
          * Check for empty first - speed ;)
          */
         if (!is_file($this->phkCreatorPath)) {
-            throw new \BuildException('You must specify the "phkcreatorpath" attribute for PHK task.');
+            throw new BuildException('You must specify the "phkcreatorpath" attribute for PHK task.');
         }
         if (empty($this->inputDirectory)) {
-            throw new \BuildException('You must specify the "inputdirectory" attribute for PHK task.');
+            throw new BuildException('You must specify the "inputdirectory" attribute for PHK task.');
         }
         if (empty($this->outputFile)) {
-            throw new \BuildException('You must specify the "outputfile" attribute for PHK task.');
+            throw new BuildException('You must specify the "outputfile" attribute for PHK task.');
         }
 
         include_once $this->phkCreatorPath;
 
+        /** @phpstan-ignore-next-line */
         $mountPoint = \PHK_Mgr::mount($this->outputFile, \PHK::F_CREATOR);
+        /** @phpstan-ignore-next-line */
         $phkManager = \PHK_Mgr::instance($mountPoint);
 
         /*
